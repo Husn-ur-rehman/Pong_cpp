@@ -48,6 +48,12 @@ class PongBall{
 
  // the rectangle thingy code;
 class Paddle{
+    protected:
+    void Limit(){
+        if( y <= 0) y = 0;
+
+        if(y + height >= GetScreenHeight()) y = GetScreenHeight() - height;
+    }
     public:
     float x, y, width, height;
     int speed;
@@ -70,12 +76,11 @@ class Paddle{
 
         if( IsKeyDown(KEY_DOWN)) y = y + speed; 
 
-        if( y <= 0) y = 0;
-
-        if(y + height >= GetScreenHeight()) y = GetScreenHeight() - height;
+        Limit();
     }
 };
 
+// Opponent class
 
 class AIPaddle: public Paddle{
     public:
@@ -92,6 +97,8 @@ class AIPaddle: public Paddle{
 
         if( y + height/ 2 > pongball_y) y = y - speed;
         if( y + height/2 <= pongball_y) y = y + speed;
+
+        Limit();
     }
 
 
@@ -116,10 +123,18 @@ int main(){
 
         BeginDrawing(); //starts by drawing the canvas;
 
-        // updating game objects;
+        //Updating game objects;
         Ball.update();
         player.update();
         AI.update(Ball.y);
+
+        //Collision checking
+        if(CheckCollisionCircleRec(Vector2{Ball.x, Ball.y}, Ball.radius, Rectangle{player.x, player.y, player.width, player.height}))
+        Ball.speed_x *= -1;
+        
+        if(CheckCollisionCircleRec(Vector2{Ball.x, Ball.y}, Ball.radius, Rectangle{AI.x, AI.y, AI.width, AI.height}))
+        Ball.speed_x *= -1;
+
 
         //Erasing the canvas
         ClearBackground(BLACK); //this is erasing the previous screen
@@ -127,6 +142,7 @@ int main(){
 
         //Division of the canvas;
         DrawLine(screen_width/2, 0, screen_width/2, screen_height, PURPLE);
+
         // drawing the ball;
         Ball.DrawPongBall();
 
