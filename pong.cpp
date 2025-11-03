@@ -52,8 +52,11 @@ class Paddle{
     float x, y, width, height;
     int speed;
 
-    Paddle(float x_axis, float y_axis, float w, float h) : x(x_axis), y(y_axis), width(w), height(h) 
-    {}
+    Paddle( float w, float h, int s) : width(w), height(h), speed(s) 
+    {
+        x = screen_width - width - 10;
+        y = screen_height / 2 - height / 2;
+    }
     void Drawing(){
         DrawRectangle( x, y, width, height, BLUE);
     }
@@ -61,7 +64,7 @@ class Paddle{
 
 // Global Objects;
 PongBall Ball;
-Paddle player();
+Paddle player(25, 120, 6);
 
 
 // Main body of the program;
@@ -90,9 +93,7 @@ int main(){
 
         // Drawing the paddles or the slides;
         DrawRectangle(10, screen_height/2 - 60, 25, 120, BLUE);
-        DrawRectangle(screen_width - 35, screen_height/2 - 60, 25, 120, BLUE);
-
-
+        player.Drawing();
 
         EndDrawing(); // ends the drawing the canvas;
     }
