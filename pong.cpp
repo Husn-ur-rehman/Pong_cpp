@@ -3,6 +3,11 @@
 
 using namespace std;
 
+// Global  Variables;
+const int screen_width = 1200;
+const int screen_height = 800;
+
+// Ball class;
 class PongBall{
     public:
     float x, y;
@@ -10,38 +15,73 @@ class PongBall{
     int speed_y;
     int radius;
 
+    PongBall(float x_axis, float y_axis, int sp_x_axis, int sp_y_axis, int r){
+        radius = 20;
+        x = screen_width /2;
+        y = screen_height /2;
+
+        speed_x = 10;
+        speed_y = 10;
+    }
+    PongBall(){
+        radius = 20;
+        x = screen_width /2;
+        y = screen_height /2;
+
+        speed_x = 10;
+        speed_y = 10;
+    }
+
+
     void DrawPongBall(){
         DrawCircle( x, y, 29, RED);
     }
     void update(){
         x += speed_x;
         y += speed_y;
+
+        if(y + radius >= GetScreenHeight() || y - radius <= 0) speed_y *= -1;
+
+        if(x + radius >= GetScreenWidth() || x - radius <= 0) speed_x *= -1;
     }
 };
 
-PongBall Ball;
+ // the rectangle thingy code;
+class Paddle{
+    public:
+    float x, y, width, height;
+    int speed;
 
+    Paddle(float x_axis, float y_axis, float w, float h) : x(x_axis), y(y_axis), width(w), height(h) 
+    {}
+    void Drawing(){
+        DrawRectangle( x, y, width, height, BLUE);
+    }
+};
+
+// Global Objects;
+PongBall Ball;
+Paddle player();
+
+
+// Main body of the program;
 
 int main(){
 
     cout<< " Starting the game" << endl;
-    const int screen_width = 1200;
-    const int screen_height = 800;
     InitWindow(screen_width, screen_height, "MINE PONG GAMEE");
     SetTargetFPS(60); // sets the frame per sec for the game and takes int as input;
 
-    Ball.radius = 20;
-    Ball.x = screen_width /2;
-    Ball.y = screen_height /2;
+    while(WindowShouldClose() == false) 
+    { // checks if the esc key is pressed || if the close icon is pressed
 
-    Ball.speed_x = 10;
-    Ball.speed_y = 10;
-
-    
-
-
-    while(WindowShouldClose() == false) { // checks if the esc key is pressed || if the close icon is pressed
         BeginDrawing(); //starts by drawing the canvas;
+
+        Ball.update();
+
+        //Erasing the canvas
+        ClearBackground(BLACK); //this is erasing the previous screen
+        // which is why the ball movement felt good 
 
         //Division of the canvas;
         DrawLine(screen_width/2, 0, screen_width/2, screen_height, PURPLE);
