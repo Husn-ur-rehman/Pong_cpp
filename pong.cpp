@@ -57,15 +57,51 @@ class Paddle{
         x = screen_width - width - 10;
         y = screen_height / 2 - height / 2;
     }
+    Paddle(){
+
+    }
+
     void Drawing(){
         DrawRectangle( x, y, width, height, BLUE);
     }
+
+    void update(){
+        if(IsKeyDown(KEY_UP)) y = y - speed;
+
+        if( IsKeyDown(KEY_DOWN)) y = y + speed; 
+
+        if( y <= 0) y = 0;
+
+        if(y + height >= GetScreenHeight()) y = GetScreenHeight() - height;
+    }
 };
+
+
+class AIPaddle: public Paddle{
+    public:
+    AIPaddle(float w, float h, int s){
+        width = w;
+        height = h;
+        speed = s;
+        x = 10;
+        y = screen_height/2 - height/2; 
+
+    }
+
+    void update(int pongball_y){
+
+        if( y + height/ 2 > pongball_y) y = y - speed;
+        if( y + height/2 <= pongball_y) y = y + speed;
+    }
+
+
+};
+
 
 // Global Objects;
 PongBall Ball;
 Paddle player(25, 120, 6);
-
+AIPaddle AI(25, 120, 6);
 
 // Main body of the program;
 
@@ -80,7 +116,10 @@ int main(){
 
         BeginDrawing(); //starts by drawing the canvas;
 
+        // updating game objects;
         Ball.update();
+        player.update();
+        AI.update(Ball.y);
 
         //Erasing the canvas
         ClearBackground(BLACK); //this is erasing the previous screen
@@ -92,7 +131,7 @@ int main(){
         Ball.DrawPongBall();
 
         // Drawing the paddles or the slides;
-        DrawRectangle(10, screen_height/2 - 60, 25, 120, BLUE);
+        AI.Drawing();
         player.Drawing();
 
         EndDrawing(); // ends the drawing the canvas;
