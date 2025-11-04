@@ -32,7 +32,7 @@ class PongBall{
         speed_y = 10;
     }
     PongBall(){
-        radius = 20;
+        radius = 10;
         x = screen_width /2;
         y = screen_height /2;
 
@@ -42,7 +42,7 @@ class PongBall{
 
 
     void DrawPongBall(){
-        DrawCircle( x, y, 29, Yellow);
+        DrawCircle( x, y, 20, Yellow);
     }
     void update(){
         x += speed_x;
@@ -168,12 +168,12 @@ int main(){
 
 
         //Erasing the canvas
-        ClearBackground(Dark_Green); //this is erasing the previous screen
+        ClearBackground(Green); //this is erasing the previous screen
         // which is why the ball movement felt good 
         DrawRectangle(screen_width/2, 0, screen_width/2, screen_height/2, Green);
         DrawCircle(screen_width/2, screen_height/2, 150, Light_Green);
         //Division of the canvas;
-        DrawLine(screen_width/2, 0, screen_width/2, screen_height, PURPLE);
+        DrawLine(screen_width/2, 0, screen_width/2, screen_height, Dark_Green);
 
         // drawing the ball;
         Ball.DrawPongBall();
