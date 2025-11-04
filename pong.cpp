@@ -4,8 +4,16 @@
 using namespace std;
 
 // Global  Variables;
+
+Color Green = Color{38, 185, 154, 255}; // 255 for transparent the args for color is {green,red, blue,transparent}
+Color Dark_Green = Color{20, 160, 133, 255};
+Color Light_Green = Color{129, 204, 184, 255};
+Color Yellow = Color{243, 213, 91, 255};
+
 const int screen_width = 1200;
 const int screen_height = 800;
+int player_score = 0;
+int AI_score = 0;
 
 // Ball class;
 class PongBall{
@@ -34,7 +42,7 @@ class PongBall{
 
 
     void DrawPongBall(){
-        DrawCircle( x, y, 29, RED);
+        DrawCircle( x, y, 29, Yellow);
     }
     void update(){
         x += speed_x;
@@ -42,8 +50,31 @@ class PongBall{
 
         if(y + radius >= GetScreenHeight() || y - radius <= 0) speed_y *= -1;
 
-        if(x + radius >= GetScreenWidth() || x - radius <= 0) speed_x *= -1;
+        if(x + radius >= GetScreenWidth()){
+            AI_score++;
+            ResetBall();
+        } 
+
+        if(x - radius <= 0) {
+            player_score++;
+            ResetBall();
+        }
+    
     }
+
+    void ResetBall(){
+    
+        x = screen_width /2;
+        y = screen_height /2;
+
+        int sp_choice[2] = {-1,1};
+
+        speed_x *= sp_choice[GetRandomValue(0,1)];
+        speed_y *= sp_choice[GetRandomValue(0,1)];
+
+    }
+
+
 };
 
  // the rectangle thingy code;
@@ -68,7 +99,7 @@ class Paddle{
     }
 
     void Drawing(){
-        DrawRectangle( x, y, width, height, BLUE);
+        DrawRectangleRounded(Rectangle{x, y, width, height}, 0.8, 0, BLUE); // args (rectangle, roundness, segment, color)
     }
 
     void update(){
@@ -137,9 +168,10 @@ int main(){
 
 
         //Erasing the canvas
-        ClearBackground(BLACK); //this is erasing the previous screen
+        ClearBackground(Dark_Green); //this is erasing the previous screen
         // which is why the ball movement felt good 
-
+        DrawRectangle(screen_width/2, 0, screen_width/2, screen_height/2, Green);
+        DrawCircle(screen_width/2, screen_height/2, 150, Light_Green);
         //Division of the canvas;
         DrawLine(screen_width/2, 0, screen_width/2, screen_height, PURPLE);
 
@@ -149,6 +181,9 @@ int main(){
         // Drawing the paddles or the slides;
         AI.Drawing();
         player.Drawing();
+        // To show text on the screen the args are (jo likhhna hai, x,y co ordinates, size text ka, and lastly color);
+        DrawText(TextFormat("%i", AI_score), screen_width/4, 20, 80, RED);
+        DrawText(TextFormat("%i", player_score), 3*screen_width/4, 20, 80, RED);
 
         EndDrawing(); // ends the drawing the canvas;
     }
