@@ -173,7 +173,7 @@ int main(){
         DrawRectangle(screen_width/2, 0, screen_width/2, screen_height/2, Green);
         DrawCircle(screen_width/2, screen_height/2, 150, Light_Green);
         //Division of the canvas;
-        DrawLine(screen_width/2, 0, screen_width/2, screen_height, Dark_Green);
+        DrawLine(screen_width/2, 0, screen_width/2, screen_height, WHITE);
 
         // drawing the ball;
         Ball.DrawPongBall();
@@ -182,8 +182,8 @@ int main(){
         AI.Drawing();
         player.Drawing();
         // To show text on the screen the args are (jo likhhna hai, x,y co ordinates, size text ka, and lastly color);
-        DrawText(TextFormat("%i", AI_score), screen_width/4, 20, 80, RED);
-        DrawText(TextFormat("%i", player_score), 3*screen_width/4, 20, 80, RED);
+        DrawText(TextFormat("%i", AI_score), screen_width/4, 10, 50, Yellow);
+        DrawText(TextFormat("%i", player_score), 3*screen_width/4, 10, 50, Yellow);
 
         EndDrawing(); // ends the drawing the canvas;
     }
